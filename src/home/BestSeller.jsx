@@ -41,7 +41,7 @@ export default function BestSellers() {
      title: "Retro Lamp 204",
      price: "$75",
      image:
-       "https://cdn.pixabay.com/photo/2016/03/27/19/55/table-lamp-1284505_640.png",
+       "https://static.vecteezy.com/system/resources/thumbnails/058/998/796/small/beautiful-modern-interior-styling-desk-lamp-workspace-lighting-transparent-for-decor-genuine-png.png",
      bgColor: "#E2ECE9",
    },
    {
@@ -49,7 +49,7 @@ export default function BestSellers() {
      title: "Lumo Chair 500",
      price: "$110",
      image:
-       "https://cdn.pixabay.com/photo/2014/04/02/10/56/chair-306844_640.png",
+       "https://png.pngtree.com/png-vector/20240902/ourmid/pngtree-modern-orange-armchair-retro-lounge-chair-mid-century-furniture-living-room-png-image_13721695.png",
      bgColor: "#F8EDEB",
    },
  ];

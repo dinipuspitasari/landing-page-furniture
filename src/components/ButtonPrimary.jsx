@@ -3,12 +3,14 @@ import { Button as FlowbiteButton } from "flowbite-react";
 export default function ButtonPrimary({
   children,
   onClick,
+  type = "button",
   className = "",
 }) {
   return (
     <FlowbiteButton
+      type={type}
       onClick={onClick}
-      className={`rounded-full bg-[#bd4135] text-white shadow-md transition-all duration-200 ease-in-out hover:bg-red-800`}
+      className={`rounded-full bg-[#bd4135] text-white shadow-md transition-all duration-200 ease-in-out hover:bg-red-800 ${className}`}
     >
       {children}
     </FlowbiteButton>
