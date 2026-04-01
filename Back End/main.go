@@ -26,7 +26,10 @@ func main() {
 	routes.RegisterRoutes(mux)
 
 	// 4. Jalankan server
-	port := os.Getenv("APP_PORT")
+	port := os.Getenv("PORT") // Railway/Render dan PaaS modern menggunakan variable "PORT"
+	if port == "" {
+		port = os.Getenv("APP_PORT")
+	}
 	if port == "" {
 		port = "8080"
 	}

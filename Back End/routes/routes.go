@@ -2,15 +2,27 @@ package routes
 
 import (
 	"net/http"
+	"os"
 
 	"furniture-backend/controllers"
 	"furniture-backend/middleware"
 )
 
-// corsMiddleware menambahkan header CORS agar frontend React (port 5173) bisa mengakses API.
+// corsMiddleware menambahkan header CORS agar frontend React (baik di localhost maupun Netlify) bisa mengakses API.
 func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		allowedOrigin := os.Getenv("FRONTEND_URL")
+		if allowedOrigin == "" {
+			// Jika tidak disetel, izinkan origin dinamis agar Netlify tidak diblokir
+			origin := r.Header.Get("Origin")
+			if origin != "" {
+				allowedOrigin = origin
+			} else {
+				allowedOrigin = "*"
+			}
+		}
+
+		w.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
