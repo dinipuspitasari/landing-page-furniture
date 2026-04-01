@@ -6,7 +6,7 @@ import AppFooter from "../components/AppFooter";
 import ButtonPrimary from "../components/ButtonPrimary";
 import Card from "../components/Card";
 
-const API_BASE = "http://localhost:8080";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
 export default function AdminAddProduct() {
   // Auth guard: ambil token dari localStorage — diisi saat login berhasil

@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import AppFooter from "../components/AppFooter";
 import ProductCard from "../components/ProductCard";
 
-const API_BASE = "http://localhost:8080";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
 export default function ProductPage() {
   const [products, setProducts] = useState([]);
