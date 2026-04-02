@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { Label, TextInput, Textarea, Select, Spinner } from "flowbite-react";
+import { Label, TextInput, Textarea, Select, Spinner, Modal, ModalHeader, ModalBody, Button } from "flowbite-react";
+import { HiOutlineExclamationCircle, HiCheckCircle, HiXCircle } from "react-icons/hi";
 
 import AppFooter from "../../components/AppFooter";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import Card from "../../components/Card";
 import NavAdmin from "../../components/NavAdmin";  
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
@@ -21,7 +21,8 @@ export default function AdminUpdateProduct() {
   const [loadingCatalogs, setLoadingCatalogs] = useState(true);
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(null); 
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [resultModal, setResultModal] = useState({ isOpen: false, type: "", title: "", message: "" });
 
   const [form, setForm] = useState({
     nama_produk: "",
@@ -40,7 +41,7 @@ export default function AdminUpdateProduct() {
   useEffect(() => {
     if (!productId) {
       alert("ID Produk tidak ditemukan.");
-      window.location.href = "/admin";
+      window.location.href = "/admin/products";
       return;
     }
     
@@ -72,7 +73,7 @@ export default function AdminUpdateProduct() {
             }
           } else {
             alert("Produk tidak ditemukan.");
-            window.location.href = "/admin";
+            window.location.href = "/admin/products";
           }
         }
       })
@@ -90,7 +91,6 @@ export default function AdminUpdateProduct() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setStatus(null);
   };
 
   const handleFotoChange = (e) => {
@@ -105,13 +105,16 @@ export default function AdminUpdateProduct() {
 
     setFoto(file);
     setFotoPreview(URL.createObjectURL(file));
-    setStatus(null);
   };
 
-  const handleSubmit = async (e) => {
+  const handleUpdateClick = (e) => {
     e.preventDefault();
+    setConfirmModal(true);
+  };
+
+  const executeUpdate = async () => {
+    setConfirmModal(false);
     setLoading(true);
-    setStatus(null);
 
     try {
       const formData = new FormData();
@@ -135,15 +138,12 @@ export default function AdminUpdateProduct() {
       const data = await res.json();
 
       if (res.ok) {
-        setStatus({ type: "success", product: data.data, message: data.message });
-        setTimeout(() => {
-          window.location.href = "/admin";
-        }, 1500);
+        setResultModal({ isOpen: true, type: "success", title: "Berhasil!", message: data.message });
       } else {
-        setStatus({ type: "error", message: data.message || "Terjadi kesalahan." });
+        setResultModal({ isOpen: true, type: "error", title: "Gagal", message: data.message || "Terjadi kesalahan." });
       }
     } catch {
-      setStatus({ type: "error", message: "Tidak dapat terhubung ke server backend." });
+      setResultModal({ isOpen: true, type: "error", title: "Error", message: "Tidak dapat terhubung ke server backend." });
     } finally {
       setLoading(false);
     }
@@ -169,35 +169,15 @@ export default function AdminUpdateProduct() {
               </p>
             </div>
             <button
-              onClick={() => { window.location.href = "/admin" }}
+              onClick={() => { window.location.href = "/admin/products" }}
               className="rounded-full bg-gray-100 px-4 py-2 text-sm text-gray-600 transition hover:bg-gray-200"
             >
               Kembali
             </button>
           </div>
 
-          {status?.type === "success" && (
-            <div className="mb-6">
-              <Card
-                title={`✅ ${status.message}`}
-                description="Mengarahkan kembali ke daftar produk..."
-                bgColor="bg-white"
-              />
-            </div>
-          )}
-
-          {status?.type === "error" && (
-            <div className="mb-6">
-              <Card
-                title="❌ Gagal Memperbarui Produk"
-                description={status.message}
-                bgColor="bg-white"
-              />
-            </div>
-          )}
-
           <div className="rounded-2xl border-t bg-white p-6 shadow-sm">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <form onSubmit={handleUpdateClick} className="flex flex-col gap-5">
 
               <div>
                 <Label htmlFor="nama_produk" value="Nama Produk" className="mb-1 block text-sm font-medium text-gray-700" />
@@ -221,7 +201,6 @@ export default function AdminUpdateProduct() {
                   onChange={(e) => {
                     const raw = parseRupiah(e.target.value);
                     setForm({ ...form, harga: raw });
-                    setStatus(null);
                   }}
                   placeholder="Contoh: 3.500.000"
                   required
@@ -309,6 +288,69 @@ export default function AdminUpdateProduct() {
             </form>
           </div>
         </main>
+
+        {/* --- Modals --- */}
+        {/* Modal Konfirmasi */}
+        <Modal show={confirmModal} size="md" onClose={() => setConfirmModal(false)} popup>
+          <ModalHeader />
+          <ModalBody>
+            <div className="text-center">
+              <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-yellow-400" />
+              <h3 className="mb-5 text-lg font-normal text-gray-500">
+                Apakah Anda yakin ingin memperbarui produk <span className="font-bold">"{form.nama_produk}"</span>?
+              </h3>
+              <div className="flex justify-center gap-4">
+                <Button color="failure" onClick={executeUpdate}>
+                  Ya, Perbarui
+                </Button>
+                <Button color="gray" onClick={() => setConfirmModal(false)}>
+                  Tidak, Batal
+                </Button>
+              </div>
+            </div>
+          </ModalBody>
+        </Modal>
+
+        {/* Modal Hasil (Sukses / Error) */}
+        <Modal 
+          show={resultModal.isOpen} 
+          size="md" 
+          onClose={() => {
+            setResultModal({ ...resultModal, isOpen: false });
+            if (resultModal.type === "success") {
+              window.location.href = "/admin/products";
+            }
+          }} 
+          popup
+        >
+          <ModalHeader />
+          <ModalBody>
+            <div className="text-center">
+              {resultModal.type === "success" ? (
+                <HiCheckCircle className="mx-auto mb-4 h-16 w-16 text-green-500" />
+              ) : (
+                <HiXCircle className="mx-auto mb-4 h-16 w-16 text-red-500" />
+              )}
+              <h3 className="mb-2 text-xl font-bold text-gray-900">
+                {resultModal.title}
+              </h3>
+              <p className="text-gray-500 mb-6">{resultModal.message}</p>
+              <div className="flex justify-center">
+                <Button 
+                  color={resultModal.type === "success" ? "success" : "failure"} 
+                  onClick={() => {
+                    setResultModal({ ...resultModal, isOpen: false });
+                    if (resultModal.type === "success") {
+                      window.location.href = "/admin/products";
+                    }
+                  }}
+                >
+                  Tutup
+                </Button>
+              </div>
+            </div>
+          </ModalBody>
+        </Modal>
 
         <div className="mt-10">
           <AppFooter />

@@ -81,12 +81,12 @@ export default function ProductPage() {
                     price: "text-gray-700",
                   },
                   {
-                    bg: "FFE5EC",
+                    bg: "#FFE5EC",
                     title: "text-red-700",
                     price: "text-gray-700",
                   },
                   {
-                    bg: "80c6ba",
+                    bg: "#80c6ba",
                     title: "text-white",
                     price: "text-green-100",
                   }, // Hijau

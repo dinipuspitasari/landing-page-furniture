@@ -72,7 +72,7 @@ export default function NavAdmin() {
                 localStorage.removeItem("admin_token");
                 localStorage.removeItem("admin_nama");
                 localStorage.removeItem("admin_email");
-                window.location.href = "/login";
+                window.location.href = "/";
               }}
             >
               Log Out
