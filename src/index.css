@@ -2,6 +2,11 @@
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
 
+/* Konfigurasi ini memaksa Tailwind v4 untuk menggunakan class '.dark' 
+   alih-alih membaca prefers-color-scheme (media query OS). 
+   Karena di main.jsx class 'dark' sudah dihapus, maka dark mode mati total. */
+@custom-variant dark (&:is(.dark *));
+
 
 
 body {

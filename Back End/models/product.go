@@ -26,3 +26,12 @@ type CreateProductRequest struct {
 	CatalogID  uint    `json:"catalog_id"`
 	FotoURL    string  `json:"foto_url"`
 }
+
+// UpdateProductRequest adalah struktur body request PUT /api/products/:id.
+type UpdateProductRequest struct {
+	NamaProduk string  `json:"nama_produk"`
+	Harga      float64 `json:"harga"`
+	Deskripsi  string  `json:"deskripsi"`
+	FotoURL    string  `json:"foto_url"`
+	CatalogID  uint    `json:"catalog_id"`
+}

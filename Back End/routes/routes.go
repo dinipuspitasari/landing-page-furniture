@@ -23,7 +23,7 @@ func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		w.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 		// Preflight request (browser kirim OPTIONS sebelum POST/PUT)
@@ -92,6 +92,18 @@ func RegisterRoutes(mux *http.ServeMux) {
 		case http.MethodGet:
 			controllers.GetProducts(w, r) // admin juga bisa lihat semua produk
 		default:
+			w.WriteHeader(http.StatusMethodNotAllowed)
+		}
+	}))
+
+	// PUT /api/admin/products/ → update produk (dengan foto)
+	// DELETE /api/admin/products/ → hapus produk
+	mux.HandleFunc("/api/admin/products/", adminRoute(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPut {
+			controllers.UpdateProduct(w, r)
+		} else if r.Method == http.MethodDelete {
+			controllers.DeleteProduct(w, r)
+		} else {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 		}
 	}))

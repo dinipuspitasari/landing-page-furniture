@@ -12,4 +12,12 @@ createRoot(document.getElementById("root")).render(
   </StrictMode>,
 );
 
-initThemeMode();
+// Menghapus dark mode inisialisasi paksa dari sistem
+// initThemeMode();
+
+// Memaksa menghapus class 'dark' di elemen HTML agar aplikasi selalu dalam versi Light Mode
+if (typeof document !== "undefined") {
+  document.documentElement.classList.remove("dark");
+  // Menonaktifkan kemampuan sistem menambahkan ulang (opsional)
+  localStorage.setItem("flowbite-theme-mode", "light");
+}

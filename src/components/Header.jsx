@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiSearch, FiHeart, FiBookmark, FiMenu, FiX } from "react-icons/fi";
+import { FiSearch, FiHeart, FiBookmark, FiMenu, FiX, FiLogIn } from "react-icons/fi";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -40,7 +40,7 @@ export default function Header() {
                 R
               </span>
             </a>
-            <nav className="font-display hidden items-center gap-6 text-sm font-medium text-[#bd4135] md:flex md:rounded-full md:bg-[#f6ebd8]/80 md:px-4 md:py-2 ">
+            <nav className="font-display hidden items-center gap-6 text-sm font-medium text-[#bd4135] md:flex md:rounded-full md:bg-[#f6ebd8]/80 md:px-4 md:py-2">
               <a
                 href="/products"
                 className="transition hover:text-red-500 hover:underline"
@@ -162,6 +162,11 @@ export default function Header() {
                 <button className="rounded-full bg-[#f6ebd8]/80 p-2 text-[#bd4135] transition hover:bg-white/50">
                   <FiBookmark size={16} />
                 </button>
+                <a href="/login">
+                  <button className="rounded-full bg-[#f6ebd8]/80 p-2 text-[#bd4135] transition hover:bg-white/50">
+                    <FiLogIn size={16} />
+                  </button>
+                </a>
               </div>
             </div>
           </div>

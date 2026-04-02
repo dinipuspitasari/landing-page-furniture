@@ -55,10 +55,8 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-start py-6">
       <div className="w-full max-w-6xl">
-        
         <main className="mt-16 flex flex-col items-center px-4">
           <div className="w-full max-w-md">
-
             {/* Judul */}
             <h1 className="font-display mb-1 text-center text-3xl font-semibold text-red-700">
               Admin Login
@@ -81,7 +79,6 @@ export default function LoginPage() {
             {/* Form Login */}
             <div className="rounded-2xl border-t bg-white p-6 shadow-sm">
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
                 {/* Email */}
                 <div>
                   <Label
@@ -130,7 +127,6 @@ export default function LoginPage() {
                     )}
                   </ButtonPrimary>
                 </div>
-
               </form>
             </div>
 
@@ -144,7 +140,6 @@ export default function LoginPage() {
         <div className="mt-16">
           <AppFooter />
         </div>
-
       </div>
     </div>
   );

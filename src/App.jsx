@@ -6,8 +6,11 @@ import CreatingStyle from "./home/CreatingStye";
 import Categories from "./home/Categories";
 import CreateYourOwn from "./home/CreateYourOwn";
 import AdminAddProduct from "./admin/AdminAddProduct";
+import AdminUpdateProduct from "./admin/Pages/AdminUpdateProduct";
 import LoginPage from "./login/LoginPage";
 import ProductPage from "./products/ProductPage";
+import AdminProductPage from "./admin/Pages/ProductPage";
+import AdminDashboard from "./admin/Pages/AdminDashboard";
 
 // Routing sederhana berbasis pathname — tanpa library tambahan
 const currentPath = window.location.pathname;
@@ -18,9 +21,24 @@ export default function App() {
     return <LoginPage />;
   }
 
-  // Route: /admin → halaman tambah produk (ada auth guard di dalamnya)
+  // Route: /admin → halaman dashboard admin utama
   if (currentPath === "/admin") {
+    return <AdminDashboard />;
+  }
+
+  // Route: /admin/products → halaman list produk admin
+  if (currentPath === "/admin/products") {
+    return <AdminProductPage />;
+  }
+
+  // Route: /admin/add-product → halaman tambah produk (ada auth guard di dalamnya)
+  if (currentPath === "/admin/add-product") {
     return <AdminAddProduct />;
+  }
+
+  // Route: /admin/update-product → halaman update produk
+  if (currentPath === "/admin/update-product") {
+    return <AdminUpdateProduct />;
   }
 
   // Route: /products → halaman daftar produk page
