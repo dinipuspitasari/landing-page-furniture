@@ -115,14 +115,19 @@ export default function ProductPage() {
         <NavAdmin />
 
         <main className="mx-auto w-full max-w-7xl flex-1 p-6 lg:p-10">
-
           {/* ── Header ── */}
           <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Manajemen Produk</h1>
-              <p className="text-sm text-gray-500">Kelola daftar produk furnitur Anda.</p>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Manajemen Produk
+              </h1>
+              <p className="text-sm text-gray-500">
+                Kelola daftar produk furnitur Anda.
+              </p>
             </div>
-            <ButtonPrimary onClick={() => (window.location.href = "/admin/add-product")}>
+            <ButtonPrimary
+              onClick={() => (window.location.href = "/admin/add-product")}
+            >
               <HiPlus className="mr-2 h-5 w-5" /> Tambah Produk
             </ButtonPrimary>
           </div>
@@ -171,12 +176,19 @@ export default function ProductPage() {
               )}
               {selectedCatalog && (
                 <span className="rounded-full bg-[#4da394]/10 px-3 py-1 text-xs font-medium text-[#4da394]">
-                  🗂 {catalogOptions.find(c => String(c.id) === selectedCatalog)?.nama}
+                  🗂{" "}
+                  {
+                    catalogOptions.find((c) => String(c.id) === selectedCatalog)
+                      ?.nama
+                  }
                 </span>
               )}
               {(searchQuery || selectedCatalog) && (
                 <button
-                  onClick={() => { setSearchQuery(""); setSelectedCatalog(""); }}
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCatalog("");
+                  }}
                   className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-500 transition hover:bg-gray-200"
                 >
                   ✕ Reset
@@ -186,9 +198,11 @@ export default function ProductPage() {
           )}
 
           {/* ── Tabel ── */}
-          <div className="overflow-x-auto rounded-2xl bg-white p-4 shadow-sm">
+          <div className="overflow-hidden rounded-2xl border-2 border-t border-[#bd4135] bg-white shadow-sm">
             {loading ? (
-              <div className="flex justify-center p-10"><Spinner size="xl" /></div>
+              <div className="flex justify-center p-10">
+                <Spinner size="xl" />
+              </div>
             ) : filteredProducts.length === 0 ? (
               <div className="p-10 text-center text-gray-500">
                 {searchQuery || selectedCatalog
@@ -197,18 +211,30 @@ export default function ProductPage() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <Table striped>
+                <Table>
                   <TableHead>
                     <TableRow>
-                      <TableHeadCell>Foto</TableHeadCell>
-                      <TableHeadCell>Nama Produk</TableHeadCell>
-                      <TableHeadCell>Katalog</TableHeadCell>
-                      <TableHeadCell>Harga</TableHeadCell>
-                      <TableHeadCell>Stok</TableHeadCell>
-                      <TableHeadCell>Aksi</TableHeadCell>
+                      <TableHeadCell className="rounded-none bg-[#bd4135] text-white">
+                        Foto
+                      </TableHeadCell>
+                      <TableHeadCell className="rounded-none bg-[#bd4135] text-white">
+                        Nama Produk
+                      </TableHeadCell>
+                      <TableHeadCell className="rounded-none bg-[#bd4135] text-white">
+                        Katalog
+                      </TableHeadCell>
+                      <TableHeadCell className="rounded-none bg-[#bd4135] text-white">
+                        Harga
+                      </TableHeadCell>
+                      <TableHeadCell className="rounded-none bg-[#bd4135] text-white">
+                        Stok
+                      </TableHeadCell>
+                      <TableHeadCell className="rounded-none bg-[#bd4135] text-white">
+                        Aksi
+                      </TableHeadCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody className="divide-y text-gray-900">
+                  <TableBody className="border-[#bd4135] divide-y text-gray-900">
                     {paginatedProducts.map((p) => (
                       <TableRow
                         key={p.id}
@@ -219,16 +245,20 @@ export default function ProductPage() {
                             src={`${API_BASE}${p.foto_url}`}
                             alt={p.nama_produk}
                             className="h-16 w-16 rounded-md object-cover"
-                            onError={(e) => { e.target.src = "https://via.placeholder.com/150"; }}
+                            onError={(e) => {
+                              e.target.src = "https://via.placeholder.com/150";
+                            }}
                           />
                         </TableCell>
                         <TableCell className="font-medium whitespace-nowrap text-gray-900">
                           {p.nama_produk}
                         </TableCell>
                         <TableCell>{p.catalog?.nama || "N/A"}</TableCell>
-                        <TableCell>Rp {p.harga.toLocaleString("id-ID")}</TableCell>
                         <TableCell>
-                          <span className={`px-2 py-1 rounded-full text-xs font-bold ${p.stok > 10 ? 'bg-green-100 text-green-800' : p.stok > 0 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                          Rp {p.harga.toLocaleString("id-ID")}
+                        </TableCell>
+                        <TableCell>
+                          <span className="text-md rounded-full bg-green-100 px-2 py-1 font-bold text-green-800">
                             {p.stok}
                           </span>
                         </TableCell>
@@ -236,7 +266,9 @@ export default function ProductPage() {
                           <div className="flex items-center gap-2">
                             <ButtonPrimary
                               className="bg-emerald-800"
-                              onClick={() => { window.location.href = `/admin/update-product?id=${p.id}`; }}
+                              onClick={() => {
+                                window.location.href = `/admin/update-product?id=${p.id}`;
+                              }}
                             >
                               <HiPencilAlt className="mr-1 h-4 w-4" /> Edit
                             </ButtonPrimary>
@@ -275,7 +307,7 @@ export default function ProductPage() {
                   onClick={() => setCurrentPage(n)}
                   className={`h-9 w-9 rounded-full text-sm font-bold transition ${
                     n === currentPage
-                      ? "bg-[#bd4135] text-white shadow-md scale-110"
+                      ? "scale-110 bg-[#bd4135] text-white shadow-md"
                       : "border-2 border-[#bd4135]/25 bg-[#f6ebd8] text-[#bd4135] hover:border-[#bd4135] hover:bg-white"
                   }`}
                 >
@@ -285,7 +317,9 @@ export default function ProductPage() {
 
               {/* Tombol Next */}
               <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
                 disabled={currentPage === totalPages}
                 className="flex items-center gap-1 rounded-full border-2 border-[#bd4135]/25 bg-[#f6ebd8] px-4 py-2 text-sm font-semibold text-[#bd4135] transition hover:border-[#bd4135] hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
               >
@@ -293,8 +327,6 @@ export default function ProductPage() {
               </button>
             </div>
           )}
-
-
         </main>
 
         <AppFooter />

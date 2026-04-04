@@ -84,6 +84,18 @@ func RegisterRoutes(mux *http.ServeMux) {
 		}
 	}))
 
+	// PUT /api/admin/catalogs/ → update catalog
+	// DELETE /api/admin/catalogs/ → hapus catalog
+	mux.HandleFunc("/api/admin/catalogs/", adminRoute(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPut {
+			controllers.UpdateCatalog(w, r)
+		} else if r.Method == http.MethodDelete {
+			controllers.DeleteCatalog(w, r)
+		} else {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+		}
+	}))
+
 	// POST /api/admin/products → tambah produk baru (dengan catalog_id dari dropdown)
 	mux.HandleFunc("/api/admin/products", adminRoute(func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {

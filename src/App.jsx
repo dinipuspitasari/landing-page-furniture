@@ -11,6 +11,9 @@ import LoginPage from "./login/LoginPage";
 import ProductPage from "./products/ProductPage";
 import AdminProductPage from "./admin/Pages/ProductPage";
 import AdminDashboard from "./admin/Pages/AdminDashboard";
+import CatalogPage from "./admin/Pages/CatalogPage";
+import AdminAddCatalog from "./admin/Pages/AdminAddCatalog";
+import AdminUpdateCatalog from "./admin/Pages/AdminUpdateCatalog";
 
 // Routing sederhana berbasis pathname — tanpa library tambahan
 const currentPath = window.location.pathname;
@@ -39,6 +42,21 @@ export default function App() {
   // Route: /admin/update-product → halaman update produk
   if (currentPath === "/admin/update-product") {
     return <AdminUpdateProduct />;
+  }
+
+  // Route: /admin/catalog → halaman list katalog admin
+  if (currentPath === "/admin/catalog") {
+    return <CatalogPage />;
+  }
+
+  // Route: /admin/add-catalog → halaman tambah katalog
+  if (currentPath === "/admin/add-catalog") {
+    return <AdminAddCatalog />;
+  }
+
+  // Route: /admin/update-catalog → halaman update katalog
+  if (currentPath === "/admin/update-catalog") {
+    return <AdminUpdateCatalog />;
   }
 
   // Route: /products → halaman daftar produk page

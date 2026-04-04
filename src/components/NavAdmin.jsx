@@ -14,7 +14,6 @@ import {
 export default function NavAdmin() {
   return (
     <Navbar fluid rounded className="md:rounded-full">
-
       {/* ── Kiri: Logo ── */}
       <NavbarBrand>
         <h1 className="font-display mx-3 text-center text-4xl font-bold text-[#bd4135] italic">
@@ -24,16 +23,30 @@ export default function NavAdmin() {
 
       {/* ── Kanan: Link navigasi (desktop) + Avatar + Toggle (mobile) ── */}
       <div className="flex items-center gap-3 md:order-2">
-
         {/* Link navigasi — hanya tampil di desktop (md+) */}
         <nav className="hidden items-center gap-1 md:flex">
-          <a href="/admin" className="rounded-full px-3 py-1.5 text-sm font-bold text-[#bd4135] transition hover:bg-[#f6ebd8]">
+          <a
+            href="/admin"
+            className="rounded-full px-3 py-1.5 text-sm font-bold text-[#bd4135] transition hover:bg-[#f6ebd8]"
+          >
             Dashboard
           </a>
-          <a href="/admin/products" className="rounded-full px-3 py-1.5 text-sm font-bold text-[#bd4135] transition hover:bg-[#f6ebd8]">
+          <a
+            href="/admin/catalog"
+            className="rounded-full px-3 py-1.5 text-sm font-bold text-[#bd4135] transition hover:bg-[#f6ebd8]"
+          >
+            Katalog
+          </a>
+          <a
+            href="/admin/products"
+            className="rounded-full px-3 py-1.5 text-sm font-bold text-[#bd4135] transition hover:bg-[#f6ebd8]"
+          >
             Produk
           </a>
-          <a href="#" className="rounded-full px-3 py-1.5 text-sm font-bold text-[#bd4135] transition hover:bg-[#f6ebd8]">
+          <a
+            href="#"
+            className="rounded-full px-3 py-1.5 text-sm font-bold text-[#bd4135] transition hover:bg-[#f6ebd8]"
+          >
             Riwayat Pembelian
           </a>
         </nav>
@@ -54,7 +67,9 @@ export default function NavAdmin() {
           }
         >
           <DropdownHeader className="font-bold text-[#bd4135]">
-            <span className="block text-sm">{localStorage.getItem("admin_nama")}</span>
+            <span className="block text-sm">
+              {localStorage.getItem("admin_nama")}
+            </span>
             <span className="block truncate text-sm font-medium">
               {localStorage.getItem("admin_email")}
             </span>
@@ -62,7 +77,9 @@ export default function NavAdmin() {
           <DropdownItem onClick={() => (window.location.href = "/admin")}>
             Dashboard
           </DropdownItem>
-          <DropdownItem onClick={() => (window.location.href = "/admin/add-product")}>
+          <DropdownItem
+            onClick={() => (window.location.href = "/admin/add-product")}
+          >
             Tambah Produk
           </DropdownItem>
           <DropdownDivider />
@@ -89,17 +106,19 @@ export default function NavAdmin() {
         <NavbarLink href="/admin" className="font-bold text-[#bd4135]">
           Dashboard
         </NavbarLink>
-        <NavbarLink href="/admin/products" className="font-bold text-[#bd4135]">
+        <NavbarLink href="/admin/catalog" className="font-bold text-[#bd4135]">
+          Katalog
+        </NavbarLink>
+        <NavbarLink
+          href="/admin/products"
+          className="font-bold text-[#bd4135]"
+        >
           Produk
         </NavbarLink>
-        <NavbarLink href="/admin/add-product" className="font-bold text-[#bd4135]">
-          Tambah Produk
-        </NavbarLink>
         <NavbarLink href="/" className="font-bold text-[#bd4135]">
-          Ke Landing Page
+          Riwayat Pembelian
         </NavbarLink>
       </NavbarCollapse>
-
     </Navbar>
   );
 }

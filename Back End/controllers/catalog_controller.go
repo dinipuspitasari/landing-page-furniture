@@ -77,3 +77,103 @@ func CreateCatalog(w http.ResponseWriter, r *http.Request) {
 		"data":    newCatalog,
 	})
 }
+
+// UpdateCatalog memperbarui nama catalog berdasarkan ID.
+func UpdateCatalog(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	if r.Method != http.MethodPut {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Method tidak diizinkan"})
+		return
+	}
+
+	idStr := r.URL.Query().Get("id")
+	if idStr == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "ID catalog wajib dikirim"})
+		return
+	}
+
+	var payload struct {
+		Nama string `json:"nama"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Request body tidak valid"})
+		return
+	}
+
+	payload.Nama = strings.TrimSpace(payload.Nama)
+	if payload.Nama == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Nama catalog wajib diisi"})
+		return
+	}
+
+	var existing models.Catalog
+	if err := config.DB.First(&existing, idStr).Error; err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Catalog tidak ditemukan"})
+		return
+	}
+
+	// Cek duplikat jika namanya diubah
+	if strings.ToLower(existing.Nama) != strings.ToLower(payload.Nama) {
+		var duplicate models.Catalog
+		if err := config.DB.Where("nama = ?", payload.Nama).First(&duplicate).Error; err == nil {
+			w.WriteHeader(http.StatusConflict)
+			json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Catalog dengan nama tersebut sudah ada"})
+			return
+		}
+	}
+
+	existing.Nama = payload.Nama
+	if err := config.DB.Save(&existing).Error; err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Gagal update catalog"})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":  "success",
+		"message": "Catalog berhasil diupdate",
+		"data":    existing,
+	})
+}
+
+// DeleteCatalog menghapus catalog berdasarkan ID.
+func DeleteCatalog(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	if r.Method != http.MethodDelete {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Method tidak diizinkan"})
+		return
+	}
+
+	idStr := r.URL.Query().Get("id")
+	if idStr == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "ID catalog wajib dikirim"})
+		return
+	}
+
+	var existing models.Catalog
+	if err := config.DB.First(&existing, idStr).Error; err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Catalog tidak ditemukan"})
+		return
+	}
+
+	// Hapus catalog
+	if err := config.DB.Delete(&existing).Error; err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Gagal menghapus catalog"})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"status": "success", "message": "Catalog berhasil dihapus"})
+}
