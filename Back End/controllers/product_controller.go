@@ -56,14 +56,15 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 	namaProduk := strings.TrimSpace(r.FormValue("nama_produk"))
 	deskripsi := strings.TrimSpace(r.FormValue("deskripsi"))
 	hargaStr := strings.TrimSpace(r.FormValue("harga"))
+	stokStr := strings.TrimSpace(r.FormValue("stok"))
 	catalogIDStr := strings.TrimSpace(r.FormValue("catalog_id"))
 
 	// Validasi field teks wajib
-	if namaProduk == "" || deskripsi == "" || hargaStr == "" || catalogIDStr == "" {
+	if namaProduk == "" || deskripsi == "" || hargaStr == "" || catalogIDStr == "" || stokStr == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{
 			"status":  "error",
-			"message": "nama_produk, harga, deskripsi, dan catalog_id wajib diisi",
+			"message": "nama_produk, harga, stok, deskripsi, dan catalog_id wajib diisi",
 		})
 		return
 	}
@@ -72,6 +73,13 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 	if err != nil || harga <= 0 {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Harga tidak valid"})
+		return
+	}
+
+	stok, err := strconv.ParseUint(stokStr, 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Stok tidak valid"})
 		return
 	}
 
@@ -142,6 +150,7 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 		NamaProduk: namaProduk,
 		Harga:      harga,
 		Deskripsi:  deskripsi,
+		Stok:       uint(stok),
 		FotoURL:    fotoURL,
 		CatalogID:  uint(catalogID),
 	}
@@ -203,14 +212,15 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	namaProduk := strings.TrimSpace(r.FormValue("nama_produk"))
 	deskripsi := strings.TrimSpace(r.FormValue("deskripsi"))
 	hargaStr := strings.TrimSpace(r.FormValue("harga"))
+	stokStr := strings.TrimSpace(r.FormValue("stok"))
 	catalogIDStr := strings.TrimSpace(r.FormValue("catalog_id"))
 
 	// Validasi field teks wajib
-	if namaProduk == "" || deskripsi == "" || hargaStr == "" || catalogIDStr == "" {
+	if namaProduk == "" || deskripsi == "" || hargaStr == "" || catalogIDStr == "" || stokStr == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{
 			"status":  "error",
-			"message": "nama_produk, harga, deskripsi, dan catalog_id wajib diisi",
+			"message": "nama_produk, harga, stok, deskripsi, dan catalog_id wajib diisi",
 		})
 		return
 	}
@@ -219,6 +229,13 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	if err != nil || harga <= 0 {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Harga tidak valid"})
+		return
+	}
+
+	stok, err := strconv.ParseUint(stokStr, 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Stok tidak valid"})
 		return
 	}
 
@@ -303,6 +320,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	product.NamaProduk = namaProduk
 	product.Harga = harga
 	product.Deskripsi = deskripsi
+	product.Stok = uint(stok)
 	product.FotoURL = fotoURL
 	product.CatalogID = uint(catalogID)
 

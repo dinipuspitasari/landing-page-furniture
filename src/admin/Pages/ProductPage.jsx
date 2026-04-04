@@ -204,6 +204,7 @@ export default function ProductPage() {
                       <TableHeadCell>Nama Produk</TableHeadCell>
                       <TableHeadCell>Katalog</TableHeadCell>
                       <TableHeadCell>Harga</TableHeadCell>
+                      <TableHeadCell>Stok</TableHeadCell>
                       <TableHeadCell>Aksi</TableHeadCell>
                     </TableRow>
                   </TableHead>
@@ -226,6 +227,11 @@ export default function ProductPage() {
                         </TableCell>
                         <TableCell>{p.catalog?.nama || "N/A"}</TableCell>
                         <TableCell>Rp {p.harga.toLocaleString("id-ID")}</TableCell>
+                        <TableCell>
+                          <span className={`px-2 py-1 rounded-full text-xs font-bold ${p.stok > 10 ? 'bg-green-100 text-green-800' : p.stok > 0 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                            {p.stok}
+                          </span>
+                        </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <ButtonPrimary

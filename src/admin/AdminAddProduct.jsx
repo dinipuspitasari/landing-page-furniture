@@ -28,6 +28,7 @@ export default function AdminAddProduct() {
   const [form, setForm] = useState({
     nama_produk: "",
     harga: "",
+    stok: "",
     deskripsi: "",
     catalog_id: "",
   });
@@ -96,6 +97,7 @@ export default function AdminAddProduct() {
       const formData = new FormData();
       formData.append("nama_produk", form.nama_produk);
       formData.append("harga", form.harga);
+      formData.append("stok", form.stok);
       formData.append("deskripsi", form.deskripsi);
       formData.append("catalog_id", form.catalog_id);
       formData.append("foto", foto);
@@ -210,6 +212,24 @@ export default function AdminAddProduct() {
                     setStatus(null);
                   }}
                   placeholder="Contoh: 3.500.000"
+                  required
+                />
+              </div>
+
+              {/* Stok */}
+              <div>
+                <Label htmlFor="stok" value="Jumlah Berapa (Stok)" className="mb-1 block text-sm font-medium text-gray-700" />
+                <TextInput
+                  id="stok"
+                  name="stok"
+                  type="number"
+                  min="0"
+                  value={form.stok}
+                  onChange={(e) => {
+                    handleChange(e);
+                    setStatus(null);
+                  }}
+                  placeholder="Contoh: 15"
                   required
                 />
               </div>

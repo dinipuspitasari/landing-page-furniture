@@ -27,6 +27,7 @@ export default function AdminUpdateProduct() {
   const [form, setForm] = useState({
     nama_produk: "",
     harga: "",
+    stok: "",
     deskripsi: "",
     catalog_id: "",
   });
@@ -65,6 +66,7 @@ export default function AdminUpdateProduct() {
             setForm({
               nama_produk: product.nama_produk,
               harga: product.harga,
+              stok: product.stok,
               deskripsi: product.deskripsi,
               catalog_id: product.catalog_id,
             });
@@ -120,6 +122,7 @@ export default function AdminUpdateProduct() {
       const formData = new FormData();
       formData.append("nama_produk", form.nama_produk);
       formData.append("harga", form.harga);
+      formData.append("stok", form.stok);
       formData.append("deskripsi", form.deskripsi);
       formData.append("catalog_id", form.catalog_id);
       
@@ -203,6 +206,19 @@ export default function AdminUpdateProduct() {
                     setForm({ ...form, harga: raw });
                   }}
                   placeholder="Contoh: 3.500.000"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="stok" value="Jumlah Berapa (Stok)" className="mb-1 block text-sm font-medium text-gray-700" />
+                <TextInput
+                  id="stok"
+                  name="stok"
+                  type="number"
+                  min="0"
+                  value={form.stok}
+                  onChange={handleChange}
                   required
                 />
               </div>

@@ -8,6 +8,7 @@ type Product struct {
 	NamaProduk string  `gorm:"type:varchar(200);not null"            json:"nama_produk"`
 	Harga      float64 `gorm:"type:decimal(15,2);not null"           json:"harga"`
 	Deskripsi  string  `gorm:"type:text;not null"                    json:"deskripsi"`
+	Stok       uint    `gorm:"type:int;default:0"                    json:"stok"`
 	FotoURL    string  `gorm:"type:varchar(500);not null"            json:"foto_url"`
 	CatalogID  uint    `gorm:"not null;index"                        json:"catalog_id"`
 
@@ -23,6 +24,7 @@ type CreateProductRequest struct {
 	NamaProduk string  `json:"nama_produk"`
 	Harga      float64 `json:"harga"`
 	Deskripsi  string  `json:"deskripsi"`
+	Stok       uint    `json:"stok"`
 	CatalogID  uint    `json:"catalog_id"`
 	FotoURL    string  `json:"foto_url"`
 }
@@ -32,6 +34,7 @@ type UpdateProductRequest struct {
 	NamaProduk string  `json:"nama_produk"`
 	Harga      float64 `json:"harga"`
 	Deskripsi  string  `json:"deskripsi"`
+	Stok       uint    `json:"stok"`
 	FotoURL    string  `json:"foto_url"`
 	CatalogID  uint    `json:"catalog_id"`
 }
